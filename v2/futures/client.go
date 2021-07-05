@@ -136,6 +136,7 @@ const (
 	SymbolFilterTypeMarketLotSize    SymbolFilterType = "MARKET_LOT_SIZE"
 	SymbolFilterTypeMaxNumOrders     SymbolFilterType = "MAX_NUM_ORDERS"
 	SymbolFilterTypeMaxNumAlgoOrders SymbolFilterType = "MAX_NUM_ALGO_ORDERS"
+	SymbolFilterTypeMinNotional      SymbolFilterType = "MIN_NOTIONAL"
 
 	SideEffectTypeNoSideEffect SideEffectType = "NO_SIDE_EFFECT"
 	SideEffectTypeMarginBuy    SideEffectType = "MARGIN_BUY"
@@ -405,6 +406,11 @@ func (c *Client) NewCancelAllOpenOrdersService() *CancelAllOpenOrdersService {
 	return &CancelAllOpenOrdersService{c: c}
 }
 
+// NewCancelMultipleOrdersService init cancel multiple orders service
+func (c *Client) NewCancelMultipleOrdersService() *CancelMultiplesOrdersService {
+	return &CancelMultiplesOrdersService{c: c}
+}
+
 // NewListOpenOrdersService init list open orders service
 func (c *Client) NewListOpenOrdersService() *ListOpenOrdersService {
 	return &ListOpenOrdersService{c: c}
@@ -518,4 +524,9 @@ func (c *Client) NewChangePositionModeService() *ChangePositionModeService {
 // NewGetPositionModeService init get position mode service
 func (c *Client) NewGetPositionModeService() *GetPositionModeService {
 	return &GetPositionModeService{c: c}
+}
+
+// NewGetRebateNewUserService init get rebate_newuser service
+func (c *Client) NewGetRebateNewUserService() *GetRebateNewUserService {
+	return &GetRebateNewUserService{c: c}
 }
