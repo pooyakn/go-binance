@@ -352,7 +352,7 @@ func (s *ListOrdersService) Limit(limit int) *ListOrdersService {
 }
 
 // Do send request
-func (s *ListOrdersService) Do(ctx context.Context, opts ...RequestOption) (res []*ListOrdersResponse, err error) {
+func (s *ListOrdersService) Do(ctx context.Context, opts ...RequestOption) (res *ListOrdersResponse, err error) {
 	r := &request{
 		method:   "GET",
 		endpoint: "/open/v1/orders",
@@ -390,13 +390,17 @@ func (s *ListOrdersService) Do(ctx context.Context, opts ...RequestOption) (res 
 	}
 
 	data, err := s.c.callAPI(ctx, r, opts...)
+
 	if err != nil {
-		return []*ListOrdersResponse{}, err
+		return nil, err
 	}
-	res = make([]*ListOrdersResponse, 0)
+
+	res = &ListOrdersResponse{}
 	err = json.Unmarshal(data, &res)
+
 	if err != nil {
-		return []*ListOrdersResponse{}, err
+		return nil, err
 	}
+
 	return res, nil
 }
