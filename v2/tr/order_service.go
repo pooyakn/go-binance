@@ -295,7 +295,7 @@ type ListOrdersResponse struct {
 			TimeInForce      TimeInForceType `json:"timeInForce"`
 			StopPrice        string          `json:"stopPrice"`
 			IcebergQty       string          `json:"icebergQty"`
-			Status           int             `json:"status"`
+			Status           OrderStatusType `json:"status"`
 			IsWorking        int             `json:"isWorking"`
 			CreateTime       int64           `json:"createTime"`
 		} `json:"list"`
