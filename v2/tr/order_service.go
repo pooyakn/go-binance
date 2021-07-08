@@ -3,6 +3,7 @@ package tr
 import (
 	"context"
 	"encoding/json"
+	"errors"
 )
 
 // CreateOrderService create order
@@ -145,6 +146,10 @@ func (s *CreateOrderService) Do(ctx context.Context, opts ...RequestOption) (res
 		return nil, err
 	}
 
+	if res.Code != 0 {
+		return nil, errors.New(res.Message)
+	}
+
 	return res, nil
 }
 
@@ -156,7 +161,7 @@ type GetOrderService struct {
 
 type GetOrderDetailResponse struct {
 	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Message string `json:"msg"`
 	Data    *struct {
 		OrderID          int             `json:"orderId"`
 		OrderListID      int             `json:"orderListId"`
@@ -195,14 +200,22 @@ func (s *GetOrderService) Do(ctx context.Context, opts ...RequestOption) (res *G
 	}
 
 	data, err := s.c.callAPI(ctx, r, opts...)
+
 	if err != nil {
 		return nil, err
 	}
+
 	res = new(GetOrderDetailResponse)
 	err = json.Unmarshal(data, res)
+
 	if err != nil {
 		return nil, err
 	}
+
+	if res.Code != 0 {
+		return nil, errors.New(res.Message)
+	}
+
 	return res, nil
 }
 
@@ -214,7 +227,7 @@ type CancelOrderService struct {
 
 type CancelOrderResponse struct {
 	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Message string `json:"msg"`
 	Data    *struct {
 		OrderID          int             `json:"orderId"`
 		OrderListID      int             `json:"orderListId"`
@@ -251,14 +264,22 @@ func (s *CancelOrderService) Do(ctx context.Context, opts ...RequestOption) (res
 	r.setParam("orderId", s.orderID)
 
 	data, err := s.c.callAPI(ctx, r, opts...)
+
 	if err != nil {
 		return nil, err
 	}
+
 	res = new(CancelOrderResponse)
 	err = json.Unmarshal(data, res)
+
 	if err != nil {
 		return nil, err
 	}
+
+	if res.Code != 0 {
+		return nil, errors.New(res.Message)
+	}
+
 	return res, nil
 }
 
@@ -277,7 +298,7 @@ type ListOrdersService struct {
 
 type ListOrdersResponse struct {
 	Code int    `json:"code"`
-	Msg  string `json:"msg"`
+	Message  string `json:"msg"`
 	Data *struct {
 		List []struct {
 			OrderID          string          `json:"orderId"`
@@ -400,6 +421,10 @@ func (s *ListOrdersService) Do(ctx context.Context, opts ...RequestOption) (res 
 
 	if err != nil {
 		return nil, err
+	}
+
+	if res.Code != 0 {
+		return nil, errors.New(res.Message)
 	}
 
 	return res, nil
