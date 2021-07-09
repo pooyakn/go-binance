@@ -24,7 +24,7 @@ type CreateOrderResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"msg"`
 	Data    *struct {
-		OrderID    string `json:"orderId"`
+		OrderID    int64 `json:"orderId"`
 		CreateTime int64  `json:"createTime"`
 	} `json:"data"`
 	Timestamp int64 `json:"timestamp"`
