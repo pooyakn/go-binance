@@ -25,7 +25,7 @@ type CreateOrderResponse struct {
 	Message string `json:"msg"`
 	Data    *struct {
 		OrderID    int64 `json:"orderId"`
-		CreateTime int64  `json:"createTime"`
+		CreateTime int64 `json:"createTime"`
 	} `json:"data"`
 	Timestamp int64 `json:"timestamp"`
 }
@@ -229,7 +229,7 @@ type CancelOrderResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"msg"`
 	Data    *struct {
-		OrderID          int             `json:"orderId"`
+		OrderID          string          `json:"orderId"`
 		OrderListID      int             `json:"orderListId"`
 		ClientID         string          `json:"clientId"`
 		Symbol           string          `json:"symbol"`
@@ -297,9 +297,9 @@ type ListOrdersService struct {
 }
 
 type ListOrdersResponse struct {
-	Code int    `json:"code"`
-	Message  string `json:"msg"`
-	Data *struct {
+	Code    int    `json:"code"`
+	Message string `json:"msg"`
+	Data    *struct {
 		List []struct {
 			OrderID          string          `json:"orderId"`
 			ClientID         string          `json:"clientId"`
