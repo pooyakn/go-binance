@@ -160,23 +160,26 @@ type GetOrderService struct {
 }
 
 type GetOrderDetailResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"msg"`
-	Data    *struct {
+	Code int    `json:"code"`
+	Message  string `json:"msg"`
+	Data struct {
 		OrderID          string          `json:"orderId"`
-		OrderListID      int             `json:"orderListId"`
-		ClientID         string          `json:"clientId"`
 		Symbol           string          `json:"symbol"`
+		SymbolType       SymbolType      `json:"symbolType"`
 		Side             SideType        `json:"side"`
 		Type             OrderType       `json:"type"`
 		Price            string          `json:"price"`
-		Status           OrderStatusType `json:"status"`
 		OrigQty          string          `json:"origQty"`
 		OrigQuoteQty     string          `json:"origQuoteQty"`
 		ExecutedQty      string          `json:"executedQty"`
 		ExecutedPrice    string          `json:"executedPrice"`
 		ExecutedQuoteQty string          `json:"executedQuoteQty"`
+		TimeInForce      int             `json:"timeInForce"`
+		StopPrice        string          `json:"stopPrice"`
+		IcebergQty       string          `json:"icebergQty"`
+		Status           OrderStatusType `json:"status"`
 		CreateTime       int64           `json:"createTime"`
+		ClientID         string          `json:"clientId"`
 	} `json:"data"`
 	Timestamp int64 `json:"timestamp"`
 }
@@ -229,20 +232,12 @@ type CancelOrderResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"msg"`
 	Data    *struct {
-		OrderID          string          `json:"orderId"`
-		//OrderListID      int             `json:"orderListId"`
-		//ClientID         string          `json:"clientId"`
-		Symbol           string          `json:"symbol"`
-		Type             OrderType       `json:"type"`
-		Side             SideType        `json:"side"`
-		Price            string          `json:"price"`
-		//Status           OrderStatusType `json:"status"`
-		OrigQty          string          `json:"origQty"`
-		//OrigQuoteQty     string          `json:"origQuoteQty"`
-		//ExecutedQty      string          `json:"executedQty"`
-		//ExecutedPrice    string          `json:"executedPrice"`
-		//ExecutedQuoteQty string          `json:"executedQuoteQty"`
-		//CreateTime       int64           `json:"createTime"`
+		OrderID string `json:"orderId"`
+		Symbol string    `json:"symbol"`
+		Type   OrderType `json:"type"`
+		Side   SideType  `json:"side"`
+		Price  string    `json:"price"`
+		OrigQty string `json:"origQty"`
 	} `json:"data"`
 	Timestamp int64 `json:"timestamp"`
 }
