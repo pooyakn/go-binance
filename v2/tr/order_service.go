@@ -163,19 +163,19 @@ type GetOrderDetailResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"msg"`
 	Data    *struct {
-		OrderID          int             `json:"orderId"`
+		OrderID          string          `json:"orderId"`
 		OrderListID      int             `json:"orderListId"`
 		ClientID         string          `json:"clientId"`
 		Symbol           string          `json:"symbol"`
 		Side             SideType        `json:"side"`
 		Type             OrderType       `json:"type"`
-		Price            float64         `json:"price"`
+		Price            string          `json:"price"`
 		Status           OrderStatusType `json:"status"`
-		OrigQty          float64         `json:"origQty"`
-		OrigQuoteQty     float64         `json:"origQuoteQty"`
-		ExecutedQty      float64         `json:"executedQty"`
-		ExecutedPrice    float64         `json:"executedPrice"`
-		ExecutedQuoteQty float64         `json:"executedQuoteQty"`
+		OrigQty          string          `json:"origQty"`
+		OrigQuoteQty     string          `json:"origQuoteQty"`
+		ExecutedQty      string          `json:"executedQty"`
+		ExecutedPrice    string          `json:"executedPrice"`
+		ExecutedQuoteQty string          `json:"executedQuoteQty"`
 		CreateTime       int64           `json:"createTime"`
 	} `json:"data"`
 	Timestamp int64 `json:"timestamp"`
@@ -235,13 +235,13 @@ type CancelOrderResponse struct {
 		Symbol           string          `json:"symbol"`
 		Side             SideType        `json:"side"`
 		Type             OrderType       `json:"type"`
-		Price            float64         `json:"price"`
+		Price            string          `json:"price"`
 		Status           OrderStatusType `json:"status"`
-		OrigQty          float64         `json:"origQty"`
-		OrigQuoteQty     float64         `json:"origQuoteQty"`
-		ExecutedQty      float64         `json:"executedQty"`
-		ExecutedPrice    float64         `json:"executedPrice"`
-		ExecutedQuoteQty float64         `json:"executedQuoteQty"`
+		OrigQty          string          `json:"origQty"`
+		OrigQuoteQty     string          `json:"origQuoteQty"`
+		ExecutedQty      string          `json:"executedQty"`
+		ExecutedPrice    string          `json:"executedPrice"`
+		ExecutedQuoteQty string          `json:"executedQuoteQty"`
 		CreateTime       int64           `json:"createTime"`
 	} `json:"data"`
 	Timestamp int64 `json:"timestamp"`
