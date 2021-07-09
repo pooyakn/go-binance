@@ -230,19 +230,19 @@ type CancelOrderResponse struct {
 	Message string `json:"msg"`
 	Data    *struct {
 		OrderID          string          `json:"orderId"`
-		OrderListID      int             `json:"orderListId"`
-		ClientID         string          `json:"clientId"`
+		//OrderListID      int             `json:"orderListId"`
+		//ClientID         string          `json:"clientId"`
 		Symbol           string          `json:"symbol"`
-		Side             SideType        `json:"side"`
 		Type             OrderType       `json:"type"`
+		Side             SideType        `json:"side"`
 		Price            string          `json:"price"`
-		Status           OrderStatusType `json:"status"`
+		//Status           OrderStatusType `json:"status"`
 		OrigQty          string          `json:"origQty"`
-		OrigQuoteQty     string          `json:"origQuoteQty"`
-		ExecutedQty      string          `json:"executedQty"`
-		ExecutedPrice    string          `json:"executedPrice"`
-		ExecutedQuoteQty string          `json:"executedQuoteQty"`
-		CreateTime       int64           `json:"createTime"`
+		//OrigQuoteQty     string          `json:"origQuoteQty"`
+		//ExecutedQty      string          `json:"executedQty"`
+		//ExecutedPrice    string          `json:"executedPrice"`
+		//ExecutedQuoteQty string          `json:"executedQuoteQty"`
+		//CreateTime       int64           `json:"createTime"`
 	} `json:"data"`
 	Timestamp int64 `json:"timestamp"`
 }
