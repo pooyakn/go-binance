@@ -30,7 +30,7 @@ type TimeInForceType int
 type OrderStatusType int
 
 // SymbolType define symbol type
-type SymbolType string
+type SymbolType int64
 
 // SideEffectType define side effect type for orders
 type SideEffectType string
@@ -74,7 +74,7 @@ const (
 	OrderStatusTypeRejected        OrderStatusType = 5
 	OrderStatusTypeExpired         OrderStatusType = 6
 
-	SymbolTypeSpot SymbolType = "SPOT"
+	SymbolTypeSpot SymbolType = 1
 
 	TimeInForceTypeGTC TimeInForceType = 0
 	TimeInForceTypeIOC TimeInForceType = 1
