@@ -15,6 +15,7 @@ type CreateOrderService struct {
 	quantity        *string
 	quoteOrderQty   *string
 	price           *string
+	timeInForce     TimeInForceType
 	clientId        *string
 	stopPrice       *string
 	icebergQuantity *string
@@ -33,6 +34,12 @@ type CreateOrderResponse struct {
 // Symbol set symbol
 func (s *CreateOrderService) Symbol(symbol string) *CreateOrderService {
 	s.symbol = symbol
+	return s
+}
+
+// TimeInForce set symbol
+func (s *CreateOrderService) TimeInForce(timeInForce TimeInForceType) *CreateOrderService {
+	s.timeInForce = timeInForce
 	return s
 }
 
@@ -94,6 +101,7 @@ func (s *CreateOrderService) createOrder(ctx context.Context, endpoint string, o
 		"symbol": s.symbol,
 		"side":   s.side,
 		"type":   s.orderType,
+		"timeInForce": s.timeInForce,
 	}
 
 	if s.quantity != nil {
@@ -160,9 +168,9 @@ type GetOrderService struct {
 }
 
 type GetOrderDetailResponse struct {
-	Code int    `json:"code"`
-	Message  string `json:"msg"`
-	Data struct {
+	Code    int    `json:"code"`
+	Message string `json:"msg"`
+	Data    struct {
 		OrderID          string          `json:"orderId"`
 		Symbol           string          `json:"symbol"`
 		SymbolType       SymbolType      `json:"symbolType"`
@@ -232,12 +240,12 @@ type CancelOrderResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"msg"`
 	Data    *struct {
-		OrderID string `json:"orderId"`
-		Symbol string    `json:"symbol"`
-		Type   OrderType `json:"type"`
-		Side   SideType  `json:"side"`
-		Price  string    `json:"price"`
-		OrigQty string `json:"origQty"`
+		OrderID string    `json:"orderId"`
+		Symbol  string    `json:"symbol"`
+		Type    OrderType `json:"type"`
+		Side    SideType  `json:"side"`
+		Price   string    `json:"price"`
+		OrigQty string    `json:"origQty"`
 	} `json:"data"`
 	Timestamp int64 `json:"timestamp"`
 }
