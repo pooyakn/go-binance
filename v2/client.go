@@ -14,10 +14,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/bitly/go-simplejson"
 	"github.com/pooyakn/go-binance/v2/common"
 	"github.com/pooyakn/go-binance/v2/delivery"
 	"github.com/pooyakn/go-binance/v2/futures"
-	"github.com/bitly/go-simplejson"
 )
 
 // SideType define side type of order
@@ -623,4 +623,9 @@ func (c *Client) NewListDustLogService() *ListDustLogService {
 // NewDustTransferService init dust transfer service
 func (c *Client) NewDustTransferService() *DustTransferService {
 	return &DustTransferService{c: c}
+}
+
+// NewCapitalConfigService init dust transfer service
+func (c *Client) NewCapitalConfigService() *CapitalConfigService {
+	return &CapitalConfigService{c: c}
 }
