@@ -14,11 +14,11 @@ import (
 	"os"
 	"time"
 
+	"github.com/bitly/go-simplejson"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/pooyakn/go-binance/v2/common"
 	"github.com/pooyakn/go-binance/v2/delivery"
 	"github.com/pooyakn/go-binance/v2/futures"
-	"github.com/bitly/go-simplejson"
-	jsoniter "github.com/json-iterator/go"
 )
 
 // SideType define side type of order
