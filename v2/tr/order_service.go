@@ -378,11 +378,11 @@ func (s *ListOrdersService) Do(ctx context.Context, opts ...RequestOption) (res 
 	r.setParam("symbol", s.symbol)
 
 	if s.listOrdersType != nil {
-		r.setParam("listOrdersType", s.listOrdersType)
+		r.setParam("listOrdersType", *s.listOrdersType)
 	}
 
 	if s.side != nil {
-		r.setParam("side", s.side)
+		r.setParam("side", *s.side)
 	}
 
 	if s.startTime != nil {
@@ -394,11 +394,11 @@ func (s *ListOrdersService) Do(ctx context.Context, opts ...RequestOption) (res 
 	}
 
 	if s.fromId != nil {
-		r.setParam("fromId", s.fromId)
+		r.setParam("fromId", *s.fromId)
 	}
 
 	if s.direct != nil {
-		r.setParam("direct", s.direct)
+		r.setParam("direct", *s.direct)
 	}
 
 	if s.limit != nil {
