@@ -378,7 +378,7 @@ func (s *ListOrdersService) Do(ctx context.Context, opts ...RequestOption) (res 
 	r.setParam("symbol", s.symbol)
 
 	if s.listOrdersType != nil {
-		r.setParam("listOrdersType", *s.listOrdersType)
+		r.setParam("type", *s.listOrdersType)
 	}
 
 	if s.side != nil {
