@@ -234,22 +234,12 @@ func (c *Client) callAPI(ctx context.Context, r *request, opts ...RequestOption)
 	return data, nil
 }
 
-//// NewCreateOrderService init creating order service
-//func (c *Client) NewCreateOrderService() *CreateOrderService {
-//	return &CreateOrderService{c: c}
-//}
-//
-//// NewGetOrderService init get order service
-//func (c *Client) NewGetOrderService() *GetOrderService {
-//	return &GetOrderService{c: c}
-//}
-//
-//// NewCancelOrderService init cancel order service
-//func (c *Client) NewCancelOrderService() *CancelOrderService {
-//	return &CancelOrderService{c: c}
-//}
-//
-//// NewListOrdersService init listing orders service
-//func (c *Client) NewListOrdersService() *ListOrdersService {
-//	return &ListOrdersService{c: c}
-//}
+// NewCreateSubAccountService init creating order service
+func (c *Client) NewCreateSubAccountService() *CreateSubAccountService {
+	return &CreateSubAccountService{c: c}
+}
+
+// NewCreateApiKeyForSubAccountService init get order service
+func (c *Client) NewCreateApiKeyForSubAccountService() *CreateApiKeyForSubAccountService {
+	return &CreateApiKeyForSubAccountService{c: c}
+}
