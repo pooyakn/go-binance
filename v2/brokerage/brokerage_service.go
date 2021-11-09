@@ -119,3 +119,111 @@ type CreateApiKeyForSubAccountResponse struct {
 	MarginTrade  bool   `json:"marginTrade"`
 	FuturesTrade bool   `json:"futuresTrade"`
 }
+
+type GetSubAccountDepositHistoryService struct {
+	c            *Client
+	subAccountID *string `json:"subAccountId""`
+	coin         *string `json:"coin"`
+	status       *int    `json:"status"`
+	startTime    *int64  `json:"startTime"`
+	endTime      *int64  `json:"endTime"`
+	limit        *int    `json:"limit"`
+	offest       *int    `json:"offest"`
+}
+
+func (g *GetSubAccountDepositHistoryService) SubAccountID(v string) *GetSubAccountDepositHistoryService {
+	g.subAccountID = &v
+	return g
+}
+
+func (g *GetSubAccountDepositHistoryService) Coin(v string) *GetSubAccountDepositHistoryService {
+	g.coin = &v
+	return g
+}
+
+func (g *GetSubAccountDepositHistoryService) Status(v int) *GetSubAccountDepositHistoryService {
+	g.status = &v
+	return g
+}
+
+func (g *GetSubAccountDepositHistoryService) StartTime(v int64) *GetSubAccountDepositHistoryService {
+	g.startTime = &v
+	return g
+}
+
+func (g *GetSubAccountDepositHistoryService) EndTime(v int64) *GetSubAccountDepositHistoryService {
+	g.endTime = &v
+	return g
+}
+
+func (g *GetSubAccountDepositHistoryService) Limit(v int) *GetSubAccountDepositHistoryService {
+	g.limit = &v
+	return g
+}
+
+func (g *GetSubAccountDepositHistoryService) Offest(v int) *GetSubAccountDepositHistoryService {
+	g.offest = &v
+	return g
+}
+
+func (g *GetSubAccountDepositHistoryService) Do(ctx context.Context) (res []*GetSubAccountDepositHistoryResponse, e error) {
+	r := &request{
+		method:   "GET",
+		endpoint: "/sapi/v1/broker/subAccount/depositHist",
+		secType:  secTypeSigned,
+	}
+
+	if g.subAccountID != nil {
+		r.setParam("subaccountId", *g.subAccountID)
+	}
+
+	if g.coin != nil {
+		r.setParam("coin", *g.coin)
+	}
+
+	if g.status != nil {
+		r.setParam("status", *g.status)
+	}
+
+	if g.startTime != nil {
+		r.setParam("startTime", *g.startTime)
+	}
+
+	if g.endTime != nil {
+		r.setParam("endTime", *g.endTime)
+	}
+
+	if g.limit != nil {
+		r.setParam("limit", *g.limit)
+	}
+
+	if g.offest != nil {
+		r.setParam("offest", *g.offest)
+	}
+
+	data, err := g.c.callAPI(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(data, res)
+	if err != nil {
+		return nil, err
+	}
+
+	return
+}
+
+type GetSubAccountDepositHistoryResponse struct {
+	SubAccountID  string `json:"subaccountId"`
+	Address       string `json:"address"`
+	AddressTag    string `json:"addressTag"`
+	Amount        string `json:"amount"`
+	Coin          string `json:"coin"`
+	InsertTime    int64  `json:"insertTime"`
+	Network       string `json:"network"`
+	Status        int    `json:"status"`
+	TxID          string `json:"txId"`
+	SourceAddress string `json:"sourceAddress"`
+	ConfirmTimes  string `json:"confirmTimes"`
+}
