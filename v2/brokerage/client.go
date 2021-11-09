@@ -243,3 +243,8 @@ func (c *Client) NewCreateSubAccountService() *CreateSubAccountService {
 func (c *Client) NewCreateApiKeyForSubAccountService() *CreateApiKeyForSubAccountService {
 	return &CreateApiKeyForSubAccountService{c: c}
 }
+
+// NewGetSubAccountDepositHistoryService init get order service
+func (c *Client) NewGetSubAccountDepositHistoryService() *GetSubAccountDepositHistoryService {
+	return &GetSubAccountDepositHistoryService{c: c}
+}
