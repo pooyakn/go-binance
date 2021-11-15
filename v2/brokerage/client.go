@@ -43,7 +43,7 @@ type ListOrdersSearchDirection string
 
 // Endpoints
 const (
-	baseAPIMainURL = "https://www.trbinance.com"
+	baseAPIMainURL = "https://api.binance.com"
 )
 
 // Global enums
