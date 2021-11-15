@@ -166,7 +166,7 @@ func (g *GetSubAccountDepositHistoryService) Offest(v int) *GetSubAccountDeposit
 	return g
 }
 
-func (g *GetSubAccountDepositHistoryService) Do(ctx context.Context) (res []*GetSubAccountDepositHistoryResponse, e error) {
+func (g *GetSubAccountDepositHistoryService) Do(ctx context.Context) ([]*GetSubAccountDepositHistoryResponse, error) {
 	r := &request{
 		method:   "GET",
 		endpoint: "/sapi/v1/broker/subAccount/depositHist",
@@ -206,12 +206,13 @@ func (g *GetSubAccountDepositHistoryService) Do(ctx context.Context) (res []*Get
 		return nil, err
 	}
 
-	err = json.Unmarshal(data, res)
+	res := make([]*GetSubAccountDepositHistoryResponse, 0)
+	err = json.Unmarshal(data, &res)
 	if err != nil {
 		return nil, err
 	}
 
-	return
+	return res, nil
 }
 
 type GetSubAccountDepositHistoryResponse struct {

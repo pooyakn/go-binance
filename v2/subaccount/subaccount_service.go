@@ -61,7 +61,8 @@ func (g *GetSubAccountListService) Do(ctx context.Context) (res *GetSubAccountLi
 		return nil, err
 	}
 
-	err = json.Unmarshal(data, res)
+	res = new(GetSubAccountListResponse)
+	err = json.Unmarshal(data, &res)
 	if err != nil {
 		return nil, err
 	}
