@@ -317,7 +317,7 @@ func (c *Client) callAPI(ctx context.Context, r *request, opts ...RequestOption)
 	c.debug("response body: %s", string(data))
 	c.debug("response status code: %d", res.StatusCode)
 
-	if res.StatusCode >= 400 {
+	if res.StatusCode >= http.StatusBadRequest {
 		apiErr := new(common.APIError)
 		e := json.Unmarshal(data, apiErr)
 		if e != nil {
@@ -421,6 +421,26 @@ func (c *Client) NewListOrdersService() *ListOrdersService {
 // NewGetAccountService init getting account service
 func (c *Client) NewGetAccountService() *GetAccountService {
 	return &GetAccountService{c: c}
+}
+
+// NewListSavingsFlexibleProductsService get flexible products list (Savings)
+func (c *Client) NewListSavingsFlexibleProductsService() *ListSavingsFlexibleProductsService {
+	return &ListSavingsFlexibleProductsService{c: c}
+}
+
+// NewPurchaseSavingsFlexibleProductService purchase a flexible product (Savings)
+func (c *Client) NewPurchaseSavingsFlexibleProductService() *PurchaseSavingsFlexibleProductService {
+	return &PurchaseSavingsFlexibleProductService{c: c}
+}
+
+// NewRedeemSavingsFlexibleProductService redeem a flexible product (Savings)
+func (c *Client) NewRedeemSavingsFlexibleProductService() *RedeemSavingsFlexibleProductService {
+	return &RedeemSavingsFlexibleProductService{c: c}
+}
+
+// NewListSavingsFixedAndActivityProductsService get fixed and activity product list (Savings)
+func (c *Client) NewListSavingsFixedAndActivityProductsService() *ListSavingsFixedAndActivityProductsService {
+	return &ListSavingsFixedAndActivityProductsService{c: c}
 }
 
 // NewGetAccountSnapshotService init getting account snapshot service
@@ -633,7 +653,27 @@ func (c *Client) NewDustTransferService() *DustTransferService {
 	return &DustTransferService{c: c}
 }
 
+// NewTransferToSubAccountService transfer to subaccount service
+func (c *Client) NewTransferToSubAccountService() *TransferToSubAccountService {
+	return &TransferToSubAccountService{c: c}
+}
+
+// NewAssetDividendService init the asset dividend list service
+func (c *Client) NewAssetDividendService() *AssetDividendService {
+	return &AssetDividendService{c: c}
+}
+
+// NewUserUniversalTransferService
+func (c *Client) NewUserUniversalTransferService() *CreateUserUniversalTransferService {
+	return &CreateUserUniversalTransferService{c: c}
+}
+
 // NewCapitalConfigService init dust transfer service
 func (c *Client) NewCapitalConfigService() *CapitalConfigService {
 	return &CapitalConfigService{c: c}
+}
+
+// NewGetAllMarginAssetsService init Get All Margin Assets service
+func (c *Client) NewGetAllMarginAssetsService() *GetAllMarginAssetsService {
+	return &GetAllMarginAssetsService{c: c}
 }

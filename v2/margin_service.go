@@ -729,13 +729,20 @@ func (s *ListMarginTradesService) Do(ctx context.Context, opts ...RequestOption)
 
 // GetMaxBorrowableService get max borrowable of asset
 type GetMaxBorrowableService struct {
-	c     *Client
-	asset string
+	c              *Client
+	asset          string
+	isolatedSymbol string
 }
 
 // Asset set asset
 func (s *GetMaxBorrowableService) Asset(asset string) *GetMaxBorrowableService {
 	s.asset = asset
+	return s
+}
+
+// IsolatedSymbol set isolatedSymbol
+func (s *GetMaxBorrowableService) IsolatedSymbol(isolatedSymbol string) *GetMaxBorrowableService {
+	s.isolatedSymbol = isolatedSymbol
 	return s
 }
 
@@ -747,6 +754,9 @@ func (s *GetMaxBorrowableService) Do(ctx context.Context, opts ...RequestOption)
 		secType:  secTypeSigned,
 	}
 	r.setParam("asset", s.asset)
+	if s.isolatedSymbol != "" {
+		r.setParam("isolatedSymbol", s.isolatedSymbol)
+	}
 	data, err := s.c.callAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -976,4 +986,28 @@ func (s *CloseMarginUserStreamService) Do(ctx context.Context, opts ...RequestOp
 
 	_, err = s.c.callAPI(ctx, r, opts...)
 	return err
+}
+
+// GetAllMarginAssetsService get margin pair info
+type GetAllMarginAssetsService struct {
+	c *Client
+}
+
+// Do send request
+func (s *GetAllMarginAssetsService) Do(ctx context.Context, opts ...RequestOption) (res []*MarginAsset, err error) {
+	r := &request{
+		method:   "GET",
+		endpoint: "/sapi/v1/margin/allAssets",
+		secType:  secTypeAPIKey,
+	}
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return []*MarginAsset{}, err
+	}
+	res = make([]*MarginAsset, 0)
+	err = json.Unmarshal(data, &res)
+	if err != nil {
+		return []*MarginAsset{}, err
+	}
+	return res, nil
 }
