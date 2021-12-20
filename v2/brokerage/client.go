@@ -248,3 +248,7 @@ func (c *Client) NewCreateApiKeyForSubAccountService() *CreateApiKeyForSubAccoun
 func (c *Client) NewGetSubAccountDepositHistoryService() *GetSubAccountDepositHistoryService {
 	return &GetSubAccountDepositHistoryService{c: c}
 }
+
+func (c *Client) NewSubAccountTransferService() *SubAccountTransferService {
+	return &SubAccountTransferService{c: c}
+}

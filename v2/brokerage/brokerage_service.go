@@ -120,6 +120,81 @@ type CreateApiKeyForSubAccountResponse struct {
 	FuturesTrade bool   `json:"futuresTrade"`
 }
 
+type SubAccountTransferService struct {
+	c            *Client
+	fromID       *string `json:"fromId"`
+	toID         *string `json:"toId"`
+	clientTranId *string `json:"clientTranId"`
+	asset        string  `json:"asset"`
+	amount       string  `json:"amount"`
+}
+
+func (s *SubAccountTransferService) FromID(v string) *SubAccountTransferService {
+	s.fromID = &v
+	return s
+}
+
+func (s *SubAccountTransferService) ToID(v string) *SubAccountTransferService {
+	s.toID = &v
+	return s
+}
+
+func (s *SubAccountTransferService) ClientTranID(v string) *SubAccountTransferService {
+	s.clientTranId = &v
+	return s
+}
+
+func (s *SubAccountTransferService) Asset(v string) *SubAccountTransferService {
+	s.asset = v
+	return s
+}
+
+func (s *SubAccountTransferService) Amount(v string) *SubAccountTransferService {
+	s.amount = v
+	return s
+}
+
+func (s *SubAccountTransferService) Do(ctx context.Context) (*SubAccountTransferResponse, error) {
+	r := &request{
+		method:   "POST",
+		endpoint: "/sapi/v1/broker/transfer",
+		secType:  secTypeSigned,
+	}
+
+	r.setParam("asset", s.asset)
+	r.setParam("amount", s.amount)
+
+	if s.fromID != nil {
+		r.setParam("fromId", *s.fromID)
+	}
+
+	if s.toID != nil {
+		r.setParam("toId", *s.toID)
+	}
+
+	if s.clientTranId != nil {
+		r.setParam("clientTranId", *s.clientTranId)
+	}
+
+	data, err := s.c.callAPI(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &SubAccountTransferResponse{}
+	err = json.Unmarshal(data, res)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+type SubAccountTransferResponse struct {
+	TxnID        string `json:"txnId"`
+	ClientTranID string `json:"clientTranId"`
+}
+
 type GetSubAccountDepositHistoryService struct {
 	c            *Client
 	subAccountID *string `json:"subAccountId""`
