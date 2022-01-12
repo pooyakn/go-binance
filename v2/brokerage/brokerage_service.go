@@ -191,8 +191,8 @@ func (s *SubAccountTransferService) Do(ctx context.Context) (*SubAccountTransfer
 }
 
 type SubAccountTransferResponse struct {
-	TxnID        string `json:"txnId"`
-	ClientTranID string `json:"clientTranId"`
+	TxnID        json.Number `json:"txnId"`
+	ClientTranID string      `json:"clientTranId"`
 }
 
 type GetSubAccountDepositHistoryService struct {
