@@ -252,3 +252,7 @@ func (c *Client) NewGetSubAccountDepositHistoryService() *GetSubAccountDepositHi
 func (c *Client) NewSubAccountTransferService() *SubAccountTransferService {
 	return &SubAccountTransferService{c: c}
 }
+
+func (c *Client) NewGetSubAccountTransferHistoryService() *GetSubAccountTransferHistoryService {
+	return &GetSubAccountTransferHistoryService{c: c}
+}

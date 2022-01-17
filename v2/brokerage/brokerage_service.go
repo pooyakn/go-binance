@@ -303,3 +303,127 @@ type GetSubAccountDepositHistoryResponse struct {
 	SourceAddress string `json:"sourceAddress"`
 	ConfirmTimes  string `json:"confirmTimes"`
 }
+
+type GetSubAccountTransferHistoryService struct {
+	c             *Client
+	fromID        *string `json:"fromId"`
+	toID          *string `json:"toId"`
+	clientTranID  *string `json:"clientTranId"`
+	showAllStatus *bool   `json:"showAllStatus"`
+	startTime     *int64  `json:"startTime"`
+	endTime       *int64  `json:"endTime"`
+	page          *int    `json:"page"`
+	limit         *int    `json:"limit"`
+}
+
+func (g *GetSubAccountTransferHistoryService) FromID(v string) *GetSubAccountTransferHistoryService {
+	g.fromID = &v
+	return g
+}
+
+func (g *GetSubAccountTransferHistoryService) ToID(v string) *GetSubAccountTransferHistoryService {
+	g.toID = &v
+	return g
+}
+
+func (g *GetSubAccountTransferHistoryService) ClientTranID(v string) *GetSubAccountTransferHistoryService {
+	g.clientTranID = &v
+	return g
+}
+
+func (g *GetSubAccountTransferHistoryService) ShowAllStatus(v bool) *GetSubAccountTransferHistoryService {
+	g.showAllStatus = &v
+	return g
+}
+
+func (g *GetSubAccountTransferHistoryService) StartTime(v int64) *GetSubAccountTransferHistoryService {
+	g.startTime = &v
+	return g
+}
+
+func (g *GetSubAccountTransferHistoryService) EndTime(v int64) *GetSubAccountTransferHistoryService {
+	g.endTime = &v
+	return g
+}
+
+func (g *GetSubAccountTransferHistoryService) Page(v int) *GetSubAccountTransferHistoryService {
+	g.page = &v
+	return g
+}
+
+func (g *GetSubAccountTransferHistoryService) Limit(v int) *GetSubAccountTransferHistoryService {
+	g.limit = &v
+	return g
+}
+
+func (g *GetSubAccountTransferHistoryService) Do(ctx context.Context) ([]*GetSubAccountTransferHistoryResponse, error) {
+	r := &request{
+		method:   "GET",
+		endpoint: "/sapi/v1/broker/transfer",
+		secType:  secTypeSigned,
+	}
+
+	if g.fromID != nil {
+		r.setParam("fromId", *g.fromID)
+	}
+
+	if g.toID != nil {
+		r.setParam("toId", *g.toID)
+	}
+
+	if g.clientTranID != nil {
+		r.setParam("clientTranId", *g.clientTranID)
+	}
+
+	if g.showAllStatus != nil {
+		r.setParam("showAllStatus", *g.showAllStatus)
+	}
+
+	if g.startTime != nil {
+		r.setParam("startTime", *g.startTime)
+	}
+
+	if g.endTime != nil {
+		r.setParam("endTime", *g.endTime)
+	}
+
+	if g.limit != nil {
+		r.setParam("limit", *g.limit)
+	}
+
+	if g.page != nil {
+		r.setParam("page", *g.page)
+	}
+
+	data, err := g.c.callAPI(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+
+	res := make([]*GetSubAccountTransferHistoryResponse, 0)
+	err = json.Unmarshal(data, &res)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+type GetSubAccountTransferHistoryResponse struct {
+	FromID       string                   `json:"fromId"`
+	ToID         string                   `json:"toId"`
+	Asset        string                   `json:"asset"`
+	Amount       string                   `json:"qty"`
+	Time         int64                    `json:"time"`
+	TxnID        string                   `json:"txnId"`
+	ClientTranID string                   `json:"clientTranId"`
+	Status       SubAccountTransferStatus `json:"status"`
+}
+
+type SubAccountTransferStatus string
+
+const (
+	SubAccountTransferStatusInit    SubAccountTransferStatus = "INIT"
+	SubAccountTransferStatusProcess SubAccountTransferStatus = "PROCESS"
+	SubAccountTransferStatusSuccess SubAccountTransferStatus = "SUCCESS"
+)
