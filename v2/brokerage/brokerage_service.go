@@ -415,7 +415,7 @@ type GetSubAccountTransferHistoryResponse struct {
 	Asset        string                   `json:"asset"`
 	Amount       string                   `json:"qty"`
 	Time         int64                    `json:"time"`
-	TxnID        string                   `json:"txnId"`
+	TxnID        json.Number              `json:"txnId"`
 	ClientTranID string                   `json:"clientTranId"`
 	Status       SubAccountTransferStatus `json:"status"`
 }
