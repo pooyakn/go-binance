@@ -134,6 +134,7 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 	for _, opt := range opts {
 		opt(r)
 	}
+
 	err = r.validate()
 	if err != nil {
 		return err
@@ -143,20 +144,25 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 	if r.recvWindow > 0 {
 		r.setParam(recvWindowKey, r.recvWindow)
 	}
+
 	if r.secType == secTypeSigned {
 		r.setParam(timestampKey, currentTimestamp()-c.TimeOffset)
 	}
+
 	queryString := r.query.Encode()
 	body := &bytes.Buffer{}
 	bodyString := r.form.Encode()
+
 	header := http.Header{}
 	if r.header != nil {
 		header = r.header.Clone()
 	}
+
 	if bodyString != "" {
 		header.Set("Content-Type", "application/x-www-form-urlencoded")
 		body = bytes.NewBufferString(bodyString)
 	}
+
 	if r.secType == secTypeAPIKey || r.secType == secTypeSigned {
 		header.Set("X-MBX-APIKEY", c.APIKey)
 	}
@@ -164,26 +170,32 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 	if r.secType == secTypeSigned {
 		raw := fmt.Sprintf("%s%s", queryString, bodyString)
 		mac := hmac.New(sha256.New, []byte(c.SecretKey))
+
 		_, err = mac.Write([]byte(raw))
 		if err != nil {
 			return err
 		}
+
 		v := url.Values{}
 		v.Set(signatureKey, fmt.Sprintf("%x", (mac.Sum(nil))))
+
 		if queryString == "" {
 			queryString = v.Encode()
 		} else {
 			queryString = fmt.Sprintf("%s&%s", queryString, v.Encode())
 		}
 	}
+
 	if queryString != "" {
 		fullURL = fmt.Sprintf("%s?%s", fullURL, queryString)
 	}
+
 	c.debug("full url: %s, body: %s", fullURL, bodyString)
 
 	r.fullURL = fullURL
 	r.header = header
 	r.body = body
+
 	return nil
 }
 
@@ -192,25 +204,32 @@ func (c *Client) callAPI(ctx context.Context, r *request, opts ...RequestOption)
 	if err != nil {
 		return []byte{}, err
 	}
+
 	req, err := http.NewRequest(r.method, r.fullURL, r.body)
 	if err != nil {
 		return []byte{}, err
 	}
+
 	req = req.WithContext(ctx)
 	req.Header = r.header
+
 	c.debug("request: %#v", req)
+
 	f := c.do
 	if f == nil {
 		f = c.HTTPClient.Do
 	}
+
 	res, err := f(req)
 	if err != nil {
 		return []byte{}, err
 	}
+
 	data, err = ioutil.ReadAll(res.Body)
 	if err != nil {
 		return []byte{}, err
 	}
+
 	defer func() {
 		cerr := res.Body.Close()
 		// Only overwrite the retured error if the original error was nil and an
@@ -219,6 +238,7 @@ func (c *Client) callAPI(ctx context.Context, r *request, opts ...RequestOption)
 			err = cerr
 		}
 	}()
+
 	c.debug("response: %#v", res)
 	c.debug("response body: %s", string(data))
 	c.debug("response status code: %d", res.StatusCode)
@@ -231,6 +251,7 @@ func (c *Client) callAPI(ctx context.Context, r *request, opts ...RequestOption)
 		}
 		return nil, apiErr
 	}
+
 	return data, nil
 }
 
