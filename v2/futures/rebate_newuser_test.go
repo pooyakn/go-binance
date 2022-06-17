@@ -1,7 +1,6 @@
 package futures
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -41,7 +40,6 @@ func (s *baseRebateNewUserServiceTestSuite) TestRebateNewUser() {
 	})
 	check, err := s.client.NewGetRebateNewUserService().BrokerageID(brokerageID).
 		Do(newContext(), WithRecvWindow(recvWindow))
-	fmt.Println(check)
 	r := s.r()
 	r.NoError(err)
 	e := &RebateNewUser{

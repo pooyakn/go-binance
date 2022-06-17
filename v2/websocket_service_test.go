@@ -2,7 +2,6 @@ package binance
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -786,7 +785,6 @@ func (s *websocketServiceTestSuite) assertUserDataEvent(e, a *WsUserDataEvent) {
 	r := s.r()
 	r.Equal(e.Event, a.Event, "Event")
 	r.Equal(e.Time, a.Time, "Time")
-	fmt.Println(e.TransactionTime, a.TransactionTime)
 	r.Equal(e.TransactionTime, a.TransactionTime, "TransactionTime")
 	r.Equal(e.AccountUpdateTime, a.AccountUpdateTime, "AccountUpdateTime")
 	for i, e := range e.AccountUpdate {

@@ -86,6 +86,7 @@ func (s *ListDepositsService) Do(ctx context.Context) (res []*Deposit, err error
 	if err != nil {
 		return
 	}
+
 	res = make([]*Deposit, 0)
 	err = json.Unmarshal(data, &res)
 	if err != nil {
@@ -105,8 +106,9 @@ type Deposit struct {
 	TxID          string `json:"txId"`
 	InsertTime    int64  `json:"insertTime"`
 	TransferType  int64  `json:"transferType"`
-	UnlockConfirm string `json:"unlockConfirm"`
+	UnlockConfirm int    `json:"unlockConfirm"`
 	ConfirmTimes  string `json:"confirmTimes"`
+	WalletType    int    `json:"walletType"`
 }
 
 // GetDepositsAddressService retrieves the details of a deposit address.
