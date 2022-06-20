@@ -301,7 +301,7 @@ type GetSubAccountDepositHistoryResponse struct {
 	Status        int    `json:"status"`
 	TxID          string `json:"txId"`
 	SourceAddress string `json:"sourceAddress"`
-	ConfirmTimes  string `json:"confirmTimes"`
+	ConfirmTimes  string `json:"confirmNo"`
 }
 
 type GetSubAccountTransferHistoryService struct {
