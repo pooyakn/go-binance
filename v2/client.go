@@ -277,6 +277,8 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 	fullURL := fmt.Sprintf("%s%s", c.BaseURL, r.endpoint)
 	if r.recvWindow > 0 {
 		r.setParam(recvWindowKey, r.recvWindow)
+	} else {
+		r.setParam(recvWindowKey, 20000)
 	}
 	if r.secType == secTypeSigned {
 		r.setParam(timestampKey, currentTimestamp()-c.TimeOffset)

@@ -43,14 +43,14 @@ type ListOrdersSearchDirection string
 
 // Endpoints
 const (
-	baseAPIMainURL    = "https://www.trbinance.com"
+	baseAPIMainURL = "https://www.trbinance.com"
 )
 
 // Global enums
 const (
-	ListOrdersTypeOpen ListOrdersType = 1
+	ListOrdersTypeOpen    ListOrdersType = 1
 	ListOrdersTypeHistory ListOrdersType = 2
-	ListOrdersTypeAll ListOrdersType = -1
+	ListOrdersTypeAll     ListOrdersType = -1
 
 	ListOrdersSearchDirectionPrev ListOrdersSearchDirection = "prev"
 	ListOrdersSearchDirectionNext ListOrdersSearchDirection = "next"
@@ -142,7 +142,10 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 	fullURL := fmt.Sprintf("%s%s", c.BaseURL, r.endpoint)
 	if r.recvWindow > 0 {
 		r.setParam(recvWindowKey, r.recvWindow)
+	} else {
+		r.setParam(recvWindowKey, 20000)
 	}
+
 	if r.secType == secTypeSigned {
 		r.setParam(timestampKey, currentTimestamp()-c.TimeOffset)
 	}
