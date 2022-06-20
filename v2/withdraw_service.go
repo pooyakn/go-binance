@@ -224,5 +224,5 @@ type Withdraw struct {
 	TransactionFee  string `json:"transactionFee"`
 	Info            string `json:"info"`
 	TxID            string `json:"txId"`
-	ConfirmTimes    string `json:"confirmTimes"`
+	ConfirmNo       int    `json:"confirmNo"`
 }
