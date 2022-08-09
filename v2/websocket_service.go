@@ -447,18 +447,6 @@ func WsCombinedTradeServe(symbols []string, handler WsTradeHandler, errHandler E
 	return wsCombinedTradeServe(builder.String()[:builder.Len()-1], handler, errHandler)
 }
 
-// WsCombinedTradeServe100Ms is similar to WsTradeServe100Ms, but it for multiple symbols
-func WsCombinedTradeServe100Ms(symbols []string, handler WsTradeHandler, errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
-	builder := strings.Builder{}
-
-	builder.WriteString(getCombinedEndpoint())
-	for _, s := range symbols {
-		builder.WriteString(fmt.Sprintf("%s@trade@100ms/", strings.ToLower(s)))
-	}
-
-	return wsCombinedTradeServe(builder.String()[:builder.Len()-1], handler, errHandler)
-}
-
 func wsCombinedTradeServe(endpoint string, handler WsTradeHandler, errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
 	cfg := newWsConfig(endpoint)
 
