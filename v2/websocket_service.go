@@ -435,6 +435,61 @@ func WsTradeServe(symbol string, handler WsTradeHandler, errHandler ErrHandler) 
 	return wsServe(cfg, wsHandler, errHandler)
 }
 
+// WsCombinedTradeServe is similar to WsTradeServe, but it for multiple symbols
+func WsCombinedTradeServe(symbols []string, handler WsTradeHandler, errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
+	builder := strings.Builder{}
+
+	builder.WriteString(getCombinedEndpoint())
+	for _, s := range symbols {
+		builder.WriteString(fmt.Sprintf("%s@trade/", strings.ToLower(s)))
+	}
+
+	return wsCombinedTradeServe(builder.String()[:builder.Len()-1], handler, errHandler)
+}
+
+// WsCombinedTradeServe100Ms is similar to WsTradeServe100Ms, but it for multiple symbols
+func WsCombinedTradeServe100Ms(symbols []string, handler WsTradeHandler, errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
+	builder := strings.Builder{}
+
+	builder.WriteString(getCombinedEndpoint())
+	for _, s := range symbols {
+		builder.WriteString(fmt.Sprintf("%s@trade@100ms/", strings.ToLower(s)))
+	}
+
+	return wsCombinedTradeServe(builder.String()[:builder.Len()-1], handler, errHandler)
+}
+
+func wsCombinedTradeServe(endpoint string, handler WsTradeHandler, errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
+	cfg := newWsConfig(endpoint)
+
+	wsHandler := func(message []byte) {
+		j, err := newJSON(message)
+		if err != nil {
+			errHandler(err)
+			return
+		}
+
+		stream := j.Get("stream").MustString()
+		data := j.Get("data").MustMap()
+
+		event := &WsTradeEvent{
+			Symbol: strings.ToUpper(strings.Split(stream, "@")[0]),
+		}
+
+		jsonData, _ := json.Marshal(data)
+
+		err = json.Unmarshal(jsonData, event)
+		if err != nil {
+			errHandler(err)
+			return
+		}
+
+		handler(event)
+	}
+
+	return wsServe(cfg, wsHandler, errHandler)
+}
+
 // WsTradeEvent define websocket trade event
 type WsTradeEvent struct {
 	Event         string `json:"e"`
