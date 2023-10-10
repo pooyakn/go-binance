@@ -42,7 +42,7 @@ type ListOrdersType int
 type ListOrdersSearchDirection string
 
 // Endpoints
-const (
+var (
 	baseAPIMainURL = "https://api.binance.com"
 )
 
@@ -87,6 +87,11 @@ const (
 
 func currentTimestamp() int64 {
 	return FormatTimestamp(time.Now())
+}
+
+// SetAPIEndpoints sets the endpoints for the API connections
+func SetAPIEndpoints(main string) {
+	baseAPIMainURL = main
 }
 
 // FormatTimestamp formats a time into Unix timestamp in milliseconds, as requested by Binance.

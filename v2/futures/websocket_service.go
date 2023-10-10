@@ -9,7 +9,7 @@ import (
 )
 
 // Endpoints
-const (
+var (
 	baseWsMainUrl          = "wss://fstream.binance.com/ws"
 	baseWsTestnetUrl       = "wss://stream.binancefuture.com/ws"
 	baseCombinedMainURL    = "wss://fstream.binance.com/stream?streams="
@@ -24,6 +24,14 @@ var (
 	// UseTestnet switch all the WS streams from production to the testnet
 	UseTestnet = false
 )
+
+// SetWsEndpoints sets the endpoints for the websocket connections
+func SetWsEndpoints(main, testnet, combinedMain, combinedTestnet string) {
+	baseWsMainUrl = main
+	baseWsTestnetUrl = testnet
+	baseCombinedMainURL = combinedMain
+	baseCombinedTestnetURL = combinedTestnet
+}
 
 // getWsEndpoint return the base endpoint of the WS according the UseTestnet flag
 func getWsEndpoint() string {

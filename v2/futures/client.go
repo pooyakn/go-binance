@@ -71,7 +71,7 @@ type UserDataEventReasonType string
 type ForceOrderCloseType string
 
 // Endpoints
-const (
+var (
 	baseApiMainUrl    = "https://fapi.binance.com"
 	baseApiTestnetUrl = "https://testnet.binancefuture.com"
 )
@@ -187,6 +187,12 @@ func newJSON(data []byte) (j *simplejson.Json, err error) {
 		return nil, err
 	}
 	return j, nil
+}
+
+// SetAPIEndpoints sets the endpoints for the API connections
+func SetAPIEndpoints(main, test string) {
+	baseApiMainUrl = main
+	baseApiTestnetUrl = test
 }
 
 // getApiEndpoint return the base endpoint of the WS according the UseTestnet flag

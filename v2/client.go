@@ -101,7 +101,7 @@ type RateLimitInterval string
 type AccountType string
 
 // Endpoints
-const (
+var (
 	baseAPIMainURL    = "https://api.binance.com"
 	baseAPITestnetURL = "https://testnet.binance.vision"
 )
@@ -239,6 +239,12 @@ const (
 
 func currentTimestamp() int64 {
 	return FormatTimestamp(time.Now())
+}
+
+// SetAPIEndpoints sets the endpoints for the API connections
+func SetAPIEndpoints(main, test string) {
+	baseAPIMainURL = main
+	baseAPITestnetURL = test
 }
 
 // FormatTimestamp formats a time into Unix timestamp in milliseconds, as requested by Binance.
