@@ -39,7 +39,7 @@ func (s *depositServiceTestSuite) TestListDeposits() {
         "txId":"ESBFVQUTPIWQNJSPXFNHNYHSQNTGKRVKPRABQWTAXCDWOAKDKYWPTVG9BGXNVNKTLEJGESAVXIKIZ9999",
         "insertTime":1599620082000,
         "transferType":0,
-        "unlockConfirm":12,
+        "unlockConfirm":1,
         "confirmTimes":"1/1"
     }
 ]`)
@@ -92,7 +92,7 @@ func (s *depositServiceTestSuite) TestListDeposits() {
 		TxID:          "ESBFVQUTPIWQNJSPXFNHNYHSQNTGKRVKPRABQWTAXCDWOAKDKYWPTVG9BGXNVNKTLEJGESAVXIKIZ9999",
 		InsertTime:    1599620082000,
 		TransferType:  0,
-		UnlockConfirm: 12,
+		UnlockConfirm: 1,
 		ConfirmTimes:  "1/1",
 	}, deposits[1])
 }

@@ -361,6 +361,7 @@ func (s *marginTestSuite) TestGetIsolatedMarginAccount() {
         },
         "symbol": "BTCUSDT",
         "isolatedCreated": true, 
+        "enabled": true,
         "marginLevel": "0.00000000", 
         "marginLevelStatus": "EXCESSIVE",
         "marginRatio": "0.00000000",
@@ -392,11 +393,13 @@ func (s *marginTestSuite) TestGetIsolatedMarginAccount() {
 			{
 				Symbol:            "BTCUSDT",
 				IsolatedCreated:   true,
+				Enabled:           true,
 				MarginLevel:       "0.00000000",
 				MarginLevelStatus: "EXCESSIVE",
 				MarginRatio:       "0.00000000",
 				IndexPrice:        "10000.00000000",
 				LiquidatePrice:    "1000.00000000",
+				LiquidateRate:     "1.00000000",
 				TradeEnabled:      true,
 			},
 		},
@@ -417,11 +420,15 @@ func (s *marginTestSuite) assertIsolatedMarginAccountEqual(e, a *IsolatedMarginA
 func (s *marginTestSuite) assertIsolatedMarginAssetEqual(e, a IsolatedMarginAsset) {
 	r := s.r()
 	r.Equal(e.Symbol, a.Symbol, "Symbol")
+	r.Equal(e.IsolatedCreated, a.IsolatedCreated, "IsolatedCreated")
+	r.Equal(e.Enabled, a.Enabled, "Enabled")
 	r.Equal(e.IndexPrice, a.IndexPrice, "IndexPrice")
 	r.Equal(e.LiquidatePrice, a.LiquidatePrice, "LiquidatePrice")
+	r.Equal(e.LiquidateRate, a.LiquidateRate, "LiquidateRate")
 	r.Equal(e.MarginLevel, a.MarginLevel, "MarginLevel")
 	r.Equal(e.MarginLevelStatus, a.MarginLevelStatus, "MarginLevelStatus")
 	r.Equal(e.MarginRatio, a.MarginRatio, "MarginRatio")
+	r.Equal(e.TradeEnabled, a.TradeEnabled, "TradeEnabled")
 }
 
 func (s *marginTestSuite) assertMarginAccountEqual(e, a *MarginAccount) {
@@ -872,4 +879,36 @@ func (s *marginTestSuite) assertIsolatedMarginAllPairsEqual(e, a *IsolatedMargin
 	r.Equal(e.IsMarginTrade, a.IsMarginTrade, "IsMarginTrade")
 	r.Equal(e.IsBuyAllowed, a.IsBuyAllowed, "IsBuyAllowed")
 	r.Equal(e.IsSellAllowed, a.IsSellAllowed, "IsSellAllowed")
+}
+
+func (s *marginTestSuite) TestIsolatedMarginTransferService() {
+	data := []byte(`{"tranId": 100000001}`)
+	s.mockDo(data, nil)
+	defer s.assertDo()
+
+	var (
+		asset     = "BTC"
+		symbol    = "BTCBUSD"
+		transFrom = AccountTypeIsolatedMargin
+		transTo   = AccountTypeSpot
+		amount    = "1"
+	)
+	s.assertReq(func(r *request) {
+		e := newSignedRequest().setFormParams(params{
+			"asset":     asset,
+			"symbol":    symbol,
+			"transFrom": transFrom,
+			"transTo":   transTo,
+			"amount":    amount,
+		})
+		s.assertRequestEqual(e, r)
+	})
+
+	res, err := s.client.NewIsolatedMarginTransferService().
+		Asset(asset).Symbol(symbol).TransFrom(transFrom).TransTo(transTo).Amount(amount).
+		Do(newContext())
+	r := s.r()
+	r.NoError(err)
+	e := &TransactionResponse{TranID: 100000001}
+	s.r().Equal(res, e)
 }

@@ -3,14 +3,14 @@ package binance
 import (
 	"context"
 	"net/http"
-	"strings"
 )
 
 // ExchangeInfoService exchange info service
 type ExchangeInfoService struct {
-	c       *Client
-	symbol  string
-	symbols string
+	c           *Client
+	symbol      string
+	symbols     []string
+	permissions []string
 }
 
 // Symbol set symbol
@@ -21,11 +21,15 @@ func (s *ExchangeInfoService) Symbol(symbol string) *ExchangeInfoService {
 
 // Symbols set symbol
 func (s *ExchangeInfoService) Symbols(symbols ...string) *ExchangeInfoService {
-	if len(symbols) == 0 {
-		s.symbols = "[]"
-	} else {
-		s.symbols = "[\"" + strings.Join(symbols, "\",\"") + "\"]"
-	}
+	s.symbols = symbols
+
+	return s
+}
+
+// Permissions set permission
+func (s *ExchangeInfoService) Permissions(permissions ...string) *ExchangeInfoService {
+	s.permissions = permissions
+
 	return s
 }
 
@@ -42,6 +46,9 @@ func (s *ExchangeInfoService) Do(ctx context.Context, opts ...RequestOption) (re
 	}
 	if len(s.symbols) != 0 {
 		m["symbols"] = s.symbols
+	}
+	if len(s.permissions) != 0 {
+		m["permissions"] = s.permissions
 	}
 	r.setParams(m)
 	data, err := s.c.callAPI(ctx, r, opts...)
@@ -117,10 +124,20 @@ type PercentPriceFilter struct {
 }
 
 // MinNotionalFilter define min notional filter of symbol
+// Deprecated: use NotionalFilter instead
 type MinNotionalFilter struct {
 	MinNotional      string `json:"minNotional"`
 	AveragePriceMins int    `json:"avgPriceMins"`
 	ApplyToMarket    bool   `json:"applyToMarket"`
+}
+
+// NotionalFilter define notional filter of symbol
+type NotionalFilter struct {
+	MinNotional      string `json:"minNotional"`
+	ApplyMinToMarket bool   `json:"applyMinToMarket"`
+	MaxNotional      string `json:"maxNotional"`
+	ApplyMaxToMarket bool   `json:"applyMaxToMarket"`
+	AvgPriceMins     int    `json:"avgPriceMins"`
 }
 
 // IcebergPartsFilter define iceberg part filter of symbol
@@ -201,6 +218,7 @@ func (s *Symbol) PercentPriceFilter() *PercentPriceFilter {
 }
 
 // MinNotionalFilter return min notional filter of symbol
+// Deprecated: use NotionalFilter instead
 func (s *Symbol) MinNotionalFilter() *MinNotionalFilter {
 	for _, filter := range s.Filters {
 		if filter["filterType"].(string) == string(SymbolFilterTypeMinNotional) {
@@ -213,6 +231,32 @@ func (s *Symbol) MinNotionalFilter() *MinNotionalFilter {
 			}
 			if i, ok := filter["applyToMarket"]; ok {
 				f.ApplyToMarket = i.(bool)
+			}
+			return f
+		}
+	}
+	return nil
+}
+
+// NotionalFilter return notional filter of symbol
+func (s *Symbol) NotionalFilter() *NotionalFilter {
+	for _, filter := range s.Filters {
+		if filter["filterType"].(string) == string(SymbolFilterTypeNotional) {
+			f := &NotionalFilter{}
+			if i, ok := filter["minNotional"]; ok {
+				f.MinNotional = i.(string)
+			}
+			if i, ok := filter["applyMinToMarket"]; ok {
+				f.ApplyMinToMarket = i.(bool)
+			}
+			if i, ok := filter["maxNotional"]; ok {
+				f.MaxNotional = i.(string)
+			}
+			if i, ok := filter["applyMaxToMarket"]; ok {
+				f.ApplyMaxToMarket = i.(bool)
+			}
+			if i, ok := filter["avgPriceMins"]; ok {
+				f.AvgPriceMins = int(i.(float64))
 			}
 			return f
 		}
