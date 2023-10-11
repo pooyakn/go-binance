@@ -202,6 +202,20 @@ func NewClient(apiKey, secretKey string) *Client {
 	}
 }
 
+// NewCustomClient initialize an API client instance with API key and secret key with a custom http client.
+// You should always call this function before using this SDK.
+// Services will be created by the form client.NewXXXService().
+func NewCustomClient(apiKey, secretKey string, httpClient *http.Client) *Client {
+	return &Client{
+		APIKey:     apiKey,
+		SecretKey:  secretKey,
+		BaseURL:    getApiEndpoint(),
+		UserAgent:  "Binance/golang",
+		HTTPClient: httpClient,
+		Logger:     log.New(os.Stderr, "Binance-golang ", log.LstdFlags),
+	}
+}
+
 type doFunc func(req *http.Request) (*http.Response, error)
 
 // Client define API client

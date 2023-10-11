@@ -1,11 +1,14 @@
 package binance
 
 import (
+	"crypto/tls"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
 )
+
+var tlsConfig = &tls.Config{}
 
 // WsHandler handle raw websocket message
 type WsHandler func(message []byte)
@@ -16,6 +19,11 @@ type ErrHandler func(err error)
 // WsConfig webservice configuration
 type WsConfig struct {
 	Endpoint string
+}
+
+// SetTLSConfig sets the tls.Config for the websocket connection
+func SetTLSConfig(config *tls.Config) {
+	tlsConfig = config
 }
 
 func newWsConfig(endpoint string) *WsConfig {
@@ -29,6 +37,7 @@ var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (don
 		Proxy:             http.ProxyFromEnvironment,
 		HandshakeTimeout:  45 * time.Second,
 		EnableCompression: false,
+		TLSClientConfig:   tlsConfig,
 	}
 
 	c, _, err := Dialer.Dial(cfg.Endpoint, nil)
